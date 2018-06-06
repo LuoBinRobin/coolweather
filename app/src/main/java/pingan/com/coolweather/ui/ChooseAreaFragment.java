@@ -99,7 +99,10 @@ public class ChooseAreaFragment extends Fragment {
                 if (currentLevel == LEVEL_COUNTY) {
                     queryCities();
                 } else if (currentLevel == LEVEL_CITY) {
-                    queryCounties();
+//                    queryCounties();
+                    queryProvinces();
+                }else if (currentLevel == LEVEL_PROVINCE) {
+                    getActivity().finish();
                 }
             }
         });
@@ -144,8 +147,9 @@ public class ChooseAreaFragment extends Fragment {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String responseText = response.body().string();
+                String responseText = response.body().string(); //这里不是toString
                 boolean result = false;
+                //请求省份，市，县。数据都是使用的同一个网络请求，所以要通过type来区分
                 if ("province".equals(type)) {
                     result = Utility.handleProvinceResponse(responseText); //保存到数据库中
                 } else if ("city".equals(type)) {
@@ -159,7 +163,7 @@ public class ChooseAreaFragment extends Fragment {
                         public void run() {
                             closeProgressDialog();
                             if ("province".equals(type)) {
-                                queryProvinces();
+                                queryProvinces(); //请求成功，上面只是存储到数据库，所以还要从数据库查询一次
                             } else if ("city".equals(type)) {
                                 queryCities();
                             } else if ("county".equals(type)) {
@@ -199,8 +203,8 @@ public class ChooseAreaFragment extends Fragment {
     private void queryProvinces() {
         mTitleText.setText("中国");
         mBackButton.setVisibility(View.VISIBLE);
-        mProvinceList = DataSupport.findAll(Province.class);
-        if (mProvinceList.size() > 0) {
+        mProvinceList = DataSupport.findAll(Province.class); //从数据库中查询数据
+        if (mProvinceList.size() > 0) { //从数据库中查询到了数据
             mDatalist.clear();
             for (Province province : mProvinceList) {
                 mDatalist.add(province.getProvinceName());
@@ -208,7 +212,7 @@ public class ChooseAreaFragment extends Fragment {
             mAdapter.notifyDataSetChanged();
             mListView.setSelection(0);
             currentLevel = LEVEL_PROVINCE;
-        } else {
+        } else { //数据库中没有数据，从后台获取
             String address = "http://guolin.tech/api/china";
             queryFromServer(address, "province");
         }

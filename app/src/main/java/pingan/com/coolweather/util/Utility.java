@@ -18,9 +18,9 @@ public class Utility {
     public static boolean handleProvinceResponse(String response) {
        if (!TextUtils.isEmpty(response)) {
            try {
-               JSONArray allProvinces = new JSONArray(response);
+               JSONArray allProvinces = new JSONArray(response); //返回的是Json数组
                for (int i = 0; i < allProvinces.length(); i++) {
-                   JSONObject provinceObject = allProvinces.getJSONObject(i);
+                   JSONObject provinceObject = allProvinces.getJSONObject(i); //得到指定数组中的JSONObject对象
                    Province province = new Province();
                    province.setProvinceName(provinceObject.getString("name"));
                    province.setProvinceCode(provinceObject.getInt("id"));
