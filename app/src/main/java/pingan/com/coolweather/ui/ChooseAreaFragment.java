@@ -39,6 +39,7 @@ public class ChooseAreaFragment extends Fragment {
     public static final int LEVEL_PROVINCE = 0;
     public static final int LEVEL_CITY = 1;
     public static final int LEVEL_COUNTY = 2;
+    private int currentLevel;
     private TextView mTitleText;
     private Button mBackButton;
     private ListView mListView;
@@ -47,7 +48,6 @@ public class ChooseAreaFragment extends Fragment {
     private List<City> mCityList;
     private List<County> mCountyList;
     private ArrayAdapter<String> mAdapter;
-    private int currentLevel;
     private Province mSelectedProvince;
     private City mSelectedCity;
     private ProgressDialog mProgressDialog;
@@ -67,6 +67,8 @@ public class ChooseAreaFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        queryProvinces();
+
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -99,14 +101,12 @@ public class ChooseAreaFragment extends Fragment {
                 if (currentLevel == LEVEL_COUNTY) {
                     queryCities();
                 } else if (currentLevel == LEVEL_CITY) {
-//                    queryCounties();
                     queryProvinces();
                 }else if (currentLevel == LEVEL_PROVINCE) {
                     getActivity().finish();
                 }
             }
         });
-        queryProvinces();
     }
 
     /**
