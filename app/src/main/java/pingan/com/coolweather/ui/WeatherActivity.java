@@ -1,5 +1,6 @@
 package pingan.com.coolweather.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -29,6 +30,7 @@ import okhttp3.Response;
 import pingan.com.coolweather.R;
 import pingan.com.coolweather.gson.Forecast;
 import pingan.com.coolweather.gson.Weather;
+import pingan.com.coolweather.service.AutoUpdateService;
 import pingan.com.coolweather.util.HttpUtil;
 import pingan.com.coolweather.util.Utility;
 
@@ -176,6 +178,8 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText.setText(carWash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 
 
